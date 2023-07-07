@@ -34,7 +34,7 @@ Le modèle que nous avons utilisé est un [transformer préentraîné par l'univ
 A la sortie du module de traduction, des actions sont effectuées par le drone en fonction de mots clés détéctés dans la phrase traduite. La liste des commandes reconnues est détaillée dans la section [Utilisation](#utilisation).
 
 ### Tracking
-
+Pour le tracking, les modèles préentraînés utilisés ont 
 <p align="center"> 
     <img src="Demos/Demo_tracking.gif" alt="Tracking" style="width:100%">
 </p>
@@ -85,7 +85,7 @@ Liste des commandes vocales reconnues par le drone (plusieurs mots sont autoris�
 * <ins>Décolle / décollage / décoller</ins>: Fait décoller le drone
 * <ins>Atterit / atterrissage / atterir</ins>: Fait atterir le drone
 * <ins>Gauche <*chiffre*></ins> : Effectue une déplacement latéral gauche de *chiffre* centimètres. En l'absence de paramètre optionnel, le drone se déplace de 20 cm
-* <ins>Droit / droite</ins>  : Effectue une déplacement latéral droit de *chiffre* centimètres. En l'absence de paramètre optionnel, le drone se déplace de 20 cm
+* <ins>Droit / droite <*chiffre*></ins>  : Effectue une déplacement latéral droit de *chiffre* centimètres. En l'absence de paramètre optionnel, le drone se déplace de 20 cm
 * <ins>Monte / monter <*chiffre*></ins> : Monte de *chiffre* centimètres. En l'absence de paramètre optionnel, le drone monte de 30 cm
 * <ins>Descend / descendre <*chiffre*></ins> : Descend de *chiffre* centimètres. En l'absence de paramètre optionnel, le drone descend de 30 cm
 * <ins>Tourne / tourner <*chiffre*></ins> : Effectue une rotation de *chiffre* degrés dans le sens horaire. En l'absence de paramètre optionnel, le drone tourne de 20°
