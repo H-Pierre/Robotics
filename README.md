@@ -51,8 +51,11 @@ pip install -r requirements.txt
 ```bash
 python3 download_translation_weights.py
 ```
-4. Téléchargement du modèle Speech-to-text
-Télécharger l'archive [vosk-model-fr-0.22](https://alphacephei.com/vosk/models/vosk-model-fr-0.22.zip) et la dézipper dans le dossier data
+4. Téléchargement du modèle Speech-to-text <br>
+Télécharger l'archive [vosk-model-fr-0.22](https://alphacephei.com/vosk/models/vosk-model-fr-0.22.zip) et la dézipper dans le dossier data, ou modifier le path à la ligne 19 dans `tello_object_tracking.py`
+```python
+Speech2Text = Model("PATH-A-MODIFIER/vosk-model-fr-0.22")
+```
 
 ## Utilisation
 
