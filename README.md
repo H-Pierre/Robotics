@@ -58,7 +58,7 @@ pip install -r requirements.txt
 ```bash
 python3 download_translation_weights.py
 ```
-4. Téléchargement du modèle Speech-to-text <br>
+4. Téléchargement du modèle Speech-to-text (l'archiver fait 1.5 Go)<br>
 Télécharger l'archive [vosk-model-fr-0.22](https://alphacephei.com/vosk/models/vosk-model-fr-0.22.zip) et la dézipper dans le dossier data, ou modifier le path à la ligne 19 dans `tello_object_tracking.py`
 ```python
 Speech2Text = Model("PATH-A-MODIFIER/vosk-model-fr-0.22")
@@ -76,7 +76,7 @@ En mode DEBUG :
 ```bash
 python3 tello_object_tracking.py -proto ./data/ssd_mobilenet_v1_coco_2017_11_17.pbtxt -model ./data/frozen_inference_graph.pb -obj Person -debug True -video ./data/<your video.avi> -dconf 0.4
 ```
-Pour limiter les problèmes de bruit et d'interception, nous avons forcé l'appui sur une touche pour que le drone écoute les commandes vocales. Il faut donc appuyer sur la touche `f` avant de donner une commande vocale au drone.
+⚠️ Pour limiter les problèmes de bruit et d'interception, nous avons forcé l'appui sur une touche pour que le drone écoute les commandes vocales. Il faut donc appuyer sur la touche `f` avant de donner une commande vocale au drone.
 
 Liste des commandes vocales reconnues par le drone (plusieurs mots sont autorisés pour certaines actions, pour laisser plus de marge aux erreurs de transcription/traduction). Les paramètres entre chevrons en italique sont optionnels :
 * <ins>Tracking</ins> : permet de changer le mode de tracking du drone, i.e. désactive le mode tracking si le drone est en mode tracking, ou l'active s'il n'est pas en mode tracking
