@@ -1,8 +1,3 @@
-###########################################
-# Tello drone object tracker
-# Author: fvilmos
-###########################################
-
 from utils.telloconnect import TelloConnect
 from utils.followobject import FollowObject
 import signal
@@ -12,6 +7,8 @@ import pyaudio
 from text2digits import text2digits
 from transformers import pipeline
 from vosk import Model, KaldiRecognizer
+
+is_tracking = True
 
 def get_command(mic, recogniser):
     listening = True
@@ -44,6 +41,7 @@ def translate(sentence):
     return converted_sentence
 
 def analyze_command(command, tello):
+    global is_tracking
     try:
         # Convert to lower case for consistency
         command = command.lower()
@@ -58,32 +56,57 @@ def analyze_command(command, tello):
                 amount *= 100
             elif "millimeters" in command:
                 amount /= 10
+        
+        if "tracking" in command:
+            if is_tracking == True:
+                is_tracking = False
+                print("Disabled Tracking.")
+            elif is_tracking == False:
+                is_tracking = True
+                print("Enabled Tracking.")
 
         # Adjust drone movements based on command
-        if "take off" in command:
+        if any(word in command for word in ["take off"]):
+            print("Taking off...")
             tello.send_cmd('takeoff')
-        elif "land" in command:
+        elif any(word in command for word in ["land"]):
+            print("Landing...")
             tello.send_cmd('land')
-        elif "up" in command:
+        
+        elif any(word in command for word in ["up", "increased"]):
             if amount:
                 tello.send_cmd(f'up {amount}')
+                print(f"Increasing by {amount}...")
             else:
                 tello.send_cmd('up 30')
-        elif "down" in command:
+                print("Increasing...")
+        elif any(word in command for word in ["down"]):
             if amount:
                 tello.send_cmd(f'down {amount}')
+                print(f"Decreasing by {amount}...")
             else:
                 tello.send_cmd('down 30')
-        elif "rotate clockwise" in command:
+                print("Decreasing...")
+        elif any(word in command for word in ["rotate", "turn", "spin"]):
             if amount:
                 tello.send_cmd(f'cw {amount}')
+                print(f"Rotating of {amount} degrees...")
             else:
                 tello.send_cmd('cw 20')
-        elif "rotate counter-clockwise" in command:
+                print("Rotating...")
+        elif any(word in command for word in ["advance"]):
             if amount:
-                tello.send_cmd(f'ccw {amount}')
+                tello.send_cmd(f'forward {amount}')
+                print(f"Advancing of {amount}...")
             else:
-                tello.send_cmd('ccw 20')
+                tello.send_cmd('forward 20')
+                print("Advancing...")
+        elif any(word in command for word in ["backwards"]):
+            tello.send_cmd('back 20')
+            print("Backing of 20...")
+        elif any(word in command for word in ["flip", "Philippe"]):
+            print("Flipping")
+            tello.send_cmd('flip r')
         else:
             print(f"I don't understand the command \"{command}\".")
     except Exception as e:
@@ -150,7 +173,6 @@ if __name__=="__main__":
     fobj.set_tracking( HORIZONTAL=args.th, VERTICAL=args.tv,DISTANCE=args.td, ROTATION=args.tr)
 
     while True:
-
         try:
             img = tello.get_frame()
 
@@ -158,23 +180,25 @@ if __name__=="__main__":
             if img is None: continue
 
             imghud = img.copy()
-
-            fobj.set_image_to_process(img)
             
             k = cv2.waitKey(pspeed)
+            
+            if is_tracking:
+                fobj.set_image_to_process(img)
+                fobj.draw_detections(imghud, ANONIMUS=False)
+                cv2.imshow("TelloCamera",imghud)
 
-            # Implement speech recognition
-            #command = get_command(mic, recogniser)
-            #command = translate(command)
-            #analyze_command(command, tello)
-
-        except Exception:
+        except cv2.error as e:
+            print(f"OpenCV error: {e}")
+            # Stop and restart the video stream
+            tello.stop_video()
+            tello.start_video()
+            continue
+        except Exception as e:
+            print(f"Other error: {e}")
             tello.stop_video()
             tello.stop_communication()
             break
-
-        fobj.draw_detections(imghud, ANONIMUS=False)
-        cv2.imshow("TelloCamera",imghud)
 
         # write video
         if k ==ord('v'):
@@ -189,16 +213,29 @@ if __name__=="__main__":
             tello.stop_communication()
             break
         
+        if k == ord('t'):
+            print("")
+            tello.send_cmd('takeoff')
+            
+        if k == ord('x'):
+            print("X is pressed")
+            if is_tracking==False:
+                is_tracking = True
+                print("Enabled Tracking")
+            elif is_tracking==True:
+                is_tracking = False
+                print("Disabled Tracking")
+        
         if k==ord('f'):
             print("Start listening...")
             command = get_command(mic, recogniser)
             command = translate(command)
+            print(command)
+            analyze_command(command, tello)
             print("Stop listening...")
 
-        if k == ord('t'):
-            tello.send_cmd('takeoff')
-
         if k == ord('l'):
+            print("Landing...")
             tello.send_cmd('land')
 
         if k == ord('w'):
