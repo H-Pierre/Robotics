@@ -38,6 +38,21 @@ Helsinki https://huggingface.co/Helsinki-NLP/opus-mt-fr-en
 
 
 ## Installation
+1. Clonage du repository
+```bash
+git clone https://github.com/H-Pierre/Robotics.git
+```
+2. Installation des dépendances
+```bash
+cd Robotics/
+pip install -r requirements.txt
+```
+3. Téléchargement du modèle de traduction depuis HuggingFace
+```bash
+python3 download_translation_weights.py
+```
+4. Téléchargement du modèle Speech-to-text
+Télécharger l'archive [vosk-model-fr-0.22](https://alphacephei.com/vosk/models/vosk-model-fr-0.22.zip) et la dézipper dans le dossier data
 
 ## Utilisation
 
