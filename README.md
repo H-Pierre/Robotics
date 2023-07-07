@@ -33,7 +33,7 @@ Helsinki https://huggingface.co/Helsinki-NLP/opus-mt-fr-en
 ### Suivi de position
 
 <p align="center"> 
-    <img src="./demo_tracking.gif" alt="206" width="600">
+    <img src="Démos/Demo_tracking.gif" alt="206" width="600">
 </p>
 
 

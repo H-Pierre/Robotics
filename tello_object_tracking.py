@@ -16,7 +16,7 @@ from utils.followobject import FollowObject
 # Flag pour modifier le statut du mode tracking (activé / désactivé)
 is_tracking = True
 # Initialisation des composants pour la reconnaissance vocale
-Speech2Text = Model("./vosk-model-fr-0.22")
+Speech2Text = Model("data/vosk-model-fr-0.22")
 recogniser = KaldiRecognizer(Speech2Text, 16000)
 mic = pyaudio.PyAudio()
 ######################################################################
