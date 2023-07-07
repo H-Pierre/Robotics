@@ -17,25 +17,27 @@ Les détails relatifs à chacune de ces applications sont exposés ci-après.
 ### Speech-to-text
 
 Pour cette partie, nous avons opté pour l'utilisation de l'[API Vosk](https://alphacephei.com/vosk/). Cette librairie offre les avantages d'être bien documentée, d'être facilement installable et utilisable (API Python), d'être suffisamment légère pour être utilisée sur des appareils mobiles (le code tourne sur un ordinateur portable, mais cela reste appréciable) et d'avoir des performances suffisantes pour notre objectif (le drone n'a finalement besoin de reconnaître qu'un nombre limité de commandes). <br>
-Nous souhaitions pouvoir nous adresser au drone en français, tant par commodité que pour faciliter la tâche au modèle (l'accent français peut être compliqué à transcrire pour certains mots). Nous avons donc décidé d'utiliser le modèle [vosk-model-fr-0.22](https://alphacephei.com/vosk/models/vosk-model-fr-0.22.zip)
+Nous souhaitions pouvoir nous adresser au drone en français, tant par commodité que pour faciliter la tâche au modèle (l'accent français peut être compliqué à transcrire pour certains mots prononcés en anglais). Nous avons donc décidé d'utiliser le modèle [vosk-model-fr-0.22](https://alphacephei.com/vosk/models/vosk-model-fr-0.22.zip)
 
-Au niveau du fonctionnement, Vosk s'appuie en fait sur 3 modules différents pour réaliser la conversion voix $\rightarrow$ texte :
-* Un modèle acoustique
-* Un modèle de langue
-* Un dictionnaire phonétique
+Au niveau du fonctionnement, Vosk s'appuie en fait sur 3 modules différents pour réaliser la transcription voix $\rightarrow$ texte :
+* Un modèle acoustique : modèle des sons utilisés dans la langue naturelle considérée
+* Un modèle de langue : modèle statistique de la distribution des tokens (lettres ou mots) dans la langue naturelle considérée
+* Un dictionnaire phonétique : mapping entre les mots et les sons dans la langue naturelle considérée
 
-### Traduction français $\rightarrow$ anglais
+Vosk s'appuie très fortemment sur des modèles [Kaldi](https://kaldi-asr.org/doc/about.html) préentraînés. L'accent est mis sur la facilité d'utilisation plus que sur la customisation / le finetuning (ce qui correspond tout à fait à notre cas d'usage). Il est difficile de savoir exactement quel modèle acoustique est utilisé, mais Kaldi semble ne proposer que des [modèles basés sur des mélanges de gaussiennes](https://kaldi-asr.org/doc/model.html). En revanche, le modèle de langage utilisé est un RNNLM, qui est la solution la plus lente proposée par Vosk, mais également la plus performante (cf. https://alphacephei.com/vosk/lm, section `Language model`) 
 
-Helsinki https://huggingface.co/Helsinki-NLP/opus-mt-fr-en
-, MarianMT => transformer https://huggingface.co/docs/transformers/model_doc/marian
+### Traduction
 
-### Détection d'objets
-### Suivi de position
+Nous n'étions pas obligé de traduire les instructions en anglais pour effectuer le mapping vers les commandes Tello, mais cela nous permettait de jouer avec un modèle de langue et d'étendre le projet facilement à d'autres langues éventuellement. Le délai de traduction est très court devant le délai de transcription speech-to-text, donc le seul réel inconvénient lié à l'introduction d'un module de traduction est le léger alourdissement du projet (besoin de télécharger un modèle supplémentaire et de rajouter une fonction de traduction). <br>
+Le modèle que nous avons utilisé est un [transformer préentraîné par l'université de Helsinki](https://huggingface.co/Helsinki-NLP/opus-mt-fr-en) sur le [dataset Opus](https://opus.nlpl.eu/). Au niveau architecture, le modèle s'appuie sur un réseau [MarianMT](https://huggingface.co/docs/transformers/model_doc/marian), un modèle alliant encoder bidirectionnel de type BERT et décodeur de type GPT, chaque module étant composé de 6 couches. <br>
+
+A la sortie du module de traduction, des actions sont effectuées par le drone en fonction de mots clés détéctés dans la phrase traduite. La liste des commandes reconnues est détaillée dans la section [Utilisation](#utilisation).
+
+### Tracking
 
 <p align="center"> 
-    <img src="Demos/Demo_tracking.gif" alt="206" width="600">
+    <img src="Demos/Demo_tracking.gif" alt="Tracking" style="width:100%">
 </p>
-
 
 ## Installation
 ⚠️ Il est fortement conseillé d'installer le projet dans un environnement virtuel dédié ! ⚠️ <br>
@@ -76,7 +78,7 @@ En mode DEBUG :
 ```bash
 python3 tello_object_tracking.py -proto ./data/ssd_mobilenet_v1_coco_2017_11_17.pbtxt -model ./data/frozen_inference_graph.pb -obj Person -debug True -video ./data/<your video.avi> -dconf 0.4
 ```
-⚠️ Pour limiter les problèmes de bruit et d'interception, nous avons forcé l'appui sur une touche pour que le drone écoute les commandes vocales. Il faut donc appuyer sur la touche `f` avant de donner une commande vocale au drone.
+⚠️ Pour limiter les problèmes de bruit et d'interception, nous avons forcé l'appui sur une touche pour que le drone écoute les commandes vocales. Il faut donc appuyer sur la touche `f` pour chaque instruction à envoyer au drone.
 
 Liste des commandes vocales reconnues par le drone (plusieurs mots sont autorisés pour certaines actions, pour laisser plus de marge aux erreurs de transcription/traduction). Les paramètres entre chevrons en italique sont optionnels :
 * <ins>Tracking</ins> : permet de changer le mode de tracking du drone, i.e. désactive le mode tracking si le drone est en mode tracking, ou l'active s'il n'est pas en mode tracking
