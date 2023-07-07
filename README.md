@@ -38,6 +38,31 @@ Helsinki https://huggingface.co/Helsinki-NLP/opus-mt-fr-en
 
 
 ## Installation
+⚠️ Il est fortement conseillé d'installer le projet dans un environnement virtuel dédié ! ⚠️ <br>
+Exemple de création et activation d'environnement virtuel :
+```bash
+python -m venv IA712_Robotique_mobile
+source IA712_Robotique_mobile/bin/activate
+```
+
+1. Clonage du repository
+```bash
+git clone https://github.com/H-Pierre/Robotics.git
+```
+2. Installation des dépendances
+```bash
+cd Robotics/
+pip install -r requirements.txt
+```
+3. Téléchargement du modèle de traduction depuis HuggingFace
+```bash
+python3 download_translation_weights.py
+```
+4. Téléchargement du modèle Speech-to-text <br>
+Télécharger l'archive [vosk-model-fr-0.22](https://alphacephei.com/vosk/models/vosk-model-fr-0.22.zip) et la dézipper dans le dossier data, ou modifier le path à la ligne 19 dans `tello_object_tracking.py`
+```python
+Speech2Text = Model("PATH-A-MODIFIER/vosk-model-fr-0.22")
+```
 
 ## Utilisation
 
