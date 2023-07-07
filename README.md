@@ -32,6 +32,11 @@ Helsinki https://huggingface.co/Helsinki-NLP/opus-mt-fr-en
 ### Détection d'objets
 ### Suivi de position
 
+<p align="center"> 
+    <img src="./demo_tracking.gif" alt="206" width="600">
+</p>
+
+
 ## Installation
 
 ## Utilisation
