@@ -38,6 +38,13 @@ Helsinki https://huggingface.co/Helsinki-NLP/opus-mt-fr-en
 
 
 ## Installation
+⚠️ Il est fortement conseillé d'installer le projet dans un environnement virtuel dédié ! ⚠️ <br>
+Exemple de création et activation d'environnement virtuel :
+```bash
+python -m venv IA712_Robotique_mobile
+source IA712_Robotique_mobile/bin/activate
+```
+
 1. Clonage du repository
 ```bash
 git clone https://github.com/H-Pierre/Robotics.git
