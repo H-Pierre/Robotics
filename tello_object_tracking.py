@@ -65,11 +65,12 @@ def translate(sentence):
 
 
 def analyze_command(command, tello):
-    """ Traduit une phrase française en anglais
+    """ Fait exécuter l'action reconnue par le drone, ou sort une exception
     Arguments:
-        sentence: String, phrase en français à traduire
+        command: String, phrase traduite en anglais
+        tello: objet TelloConnect, drone qui doit exécuter la commande
     Outputs:
-        converted_sentence: String, phrase traduite en anglais
+        N/A
     """
     global is_tracking
     try:
