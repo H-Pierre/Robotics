@@ -72,7 +72,8 @@ Speech2Text = Model("PATH-A-MODIFIER/vosk-model-fr-0.22")
 ## Utilisation
 ⚠️ Avant toute utilisation, s'assurer que la salle de test est suffisamment grande. Le mode tracking est activé par défaut, et le drone cherche à détecter une personne dans son ensemble pour effectuer le tracking : après décollage, il va se reculer jusqu'à pouvoir obsever la personne des pieds à la tête. Il y a un fort risque de collision avec tout objet/personne présent(e) derrière le drone au décollage (mais le mode tracking peut être désactivé avant le décollage). ⚠️ <br>
 1. Allumer un drone Tello et se connecter à son réseau WiFi depuis l'ordinateur où le projet est installé. 
-2. Lancer le programme avec l'une des commandes suivantes
+2. Lancer le programme avec l'une des commandes suivantes <br>
+
 Utilisation classique :
 ```bash
 python3 tello_object_tracking.py -proto ./data/ssd_mobilenet_v1_coco_2017_11_17.pbtxt -model ./data/frozen_inference_graph.pb -obj Person -dconf 0.4
