@@ -34,10 +34,13 @@ Le modèle que nous avons utilisé est un [transformer préentraîné par l'univ
 A la sortie du module de traduction, des actions sont effectuées par le drone en fonction de mots clés détéctés dans la phrase traduite. La liste des commandes reconnues est détaillée dans la section [Utilisation](#utilisation).
 
 ### Tracking
-Pour le tracking, les modèles préentraînés utilisés ont 
+Pour le tracking, les modèles préentraînés sont récupérés depuis le [GitHub de OpenCV](https://github.com/opencv/opencv/tree/master/samples/dnn). Pour détecter les personnes, un modèle de détection d'objets basés sur [MobileNet](https://arxiv.org/pdf/1704.04861.pdf) v1 finetuné sur des personnes a été utilisé. <br>
+Le suivi de position est effectué via un filtre de Kalman 2D. Nous avons là-aussi utilisé l'implémentation d'OpenCV. <br>
 <p align="center"> 
     <img src="Demos/Demo_tracking.gif" alt="Tracking" style="width:100%">
 </p>
+
+En plus du gif ci-dessus, 2 vidéos de démonstration présentant des résultats d'utilisation de notre projet sont disponibles dans le dossier [Demos](https://github.com/H-Pierre/Robotics/tree/main/Demos)
 
 ## Installation
 ⚠️ Il est fortement conseillé d'installer le projet dans un environnement virtuel dédié ! ⚠️ <br>
