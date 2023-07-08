@@ -138,6 +138,20 @@ def analyze_command(command, tello):
         elif any(word in command for word in ["flip", "Philippe"]):
             print("Flipping")
             tello.send_cmd('flip r')
+        elif any(word in command for word in ["left"]):
+            if amount:
+                tello.send_cmd(f'left {amount}')
+                print(f"Moving left by {amount}...")
+            else:
+                tello.send_cmd('left 20')
+                print("Moving left...")
+        elif any(word in command for word in ["right"]):
+            if amount:
+                tello.send_cmd(f'right {amount}')
+                print(f"Moving right by {amount}...")
+            else:
+                tello.send_cmd('right 20')
+                print("Moving right...")
         else:
             print(f"I don't understand the command \"{command}\".")
     except Exception as e:
